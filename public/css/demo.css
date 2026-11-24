@@ -1,0 +1,357 @@
+/* 시연 화면: 1790×928 기준. 왼쪽 휴대폰, 오른쪽 매장 태블릿 */
+
+body.d {
+  --top-h: 64px;
+  --cap-h: 28px;
+  --pad-y: 14px;
+  --bezel: 12px;
+  --phone-scale: 1;
+  --frame-h: calc(100vh - var(--top-h) - var(--cap-h) - var(--pad-y) * 2);
+  height: 100vh;
+  overflow: hidden;
+  background: #e9e4dc;
+}
+
+/* 상단 도구 막대 */
+.d-top {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: var(--top-h);
+  padding: 0 28px;
+  border-bottom: 1px solid #d9d1c6;
+  background: #fbfaf8;
+}
+
+.d-title {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.d-title strong {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.d-title span {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.d-clock {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 auto;
+  padding: 6px 8px 6px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.d-clock-now {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.d-clock-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.d-clock-now b {
+  min-width: 92px;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.d-chip {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--sunken);
+  color: var(--ink-2);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.d-chip.is-fixed {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.d-presets {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--sunken);
+}
+
+.d-presets button {
+  height: 32px;
+  padding: 0 11px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.d-presets button[aria-pressed='true'] {
+  background: var(--primary);
+  color: #fff;
+}
+
+.d-custom {
+  display: flex;
+  gap: 4px;
+}
+
+.d-custom input {
+  height: 38px;
+  padding: 0 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.d-custom button,
+.d-btn {
+  display: inline-flex;
+  height: 38px;
+  align-items: center;
+  padding: 0 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.d-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.d-btn-reset {
+  color: var(--bad);
+}
+
+.d-btn-reset.is-armed {
+  border-color: var(--bad);
+  background: var(--bad);
+  color: #fff;
+}
+
+/* 무대 */
+.d-stage {
+  display: flex;
+  gap: 32px;
+  height: calc(100vh - var(--top-h));
+  padding: var(--pad-y) 28px;
+}
+
+.d-pane {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.d-pane-store {
+  flex: 1;
+}
+
+.d-cap {
+  height: var(--cap-h);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.d-cap span {
+  margin-left: 6px;
+  font-weight: 500;
+  color: var(--ink-3);
+}
+
+/* 휴대폰 틀 */
+.d-phone-box {
+  width: calc((390px + var(--bezel) * 2) * var(--phone-scale));
+  height: var(--frame-h);
+}
+
+.d-phone {
+  width: calc(390px + var(--bezel) * 2);
+  height: calc(var(--frame-h) / var(--phone-scale));
+  padding: var(--bezel);
+  border-radius: 50px;
+  background: #1f1b18;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset, 0 18px 40px rgba(60, 40, 20, 0.18);
+  transform: scale(var(--phone-scale));
+  transform-origin: top left;
+}
+
+.d-phone-screen {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  flex-direction: column;
+  border-radius: 38px;
+  background: var(--bg);
+}
+
+.d-status {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  height: 34px;
+  padding: 6px 26px 0 32px;
+  background: var(--bg);
+  font-size: 15px;
+}
+
+.d-status b {
+  font-weight: 700;
+}
+
+.d-status-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  fill: var(--ink);
+  color: var(--ink);
+}
+
+.d-phone iframe {
+  flex: 1;
+  width: 390px;
+  border: 0;
+  background: var(--bg);
+}
+
+/* 태블릿 틀 */
+.d-tablet {
+  height: var(--frame-h);
+  padding: var(--bezel);
+  border-radius: 28px;
+  background: #1f1b18;
+  box-shadow: 0 18px 40px rgba(60, 40, 20, 0.16);
+}
+
+.d-tablet iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 16px;
+  background: #f3efe9;
+}
+
+/* 고객 화면 크게 보기: 휴대폰을 1.35배로 키우고 옆에 인수조건을 둔다 */
+.d-spec {
+  display: none;
+}
+
+body.d.is-zoom {
+  --phone-scale: 1.35;
+}
+
+body.d.is-zoom .d-stage {
+  justify-content: center;
+  gap: 72px;
+}
+
+body.d.is-zoom .d-pane-store {
+  display: none;
+}
+
+body.d.is-zoom .d-spec {
+  display: flex;
+  width: 440px;
+  flex-direction: column;
+  align-self: center;
+  padding: 32px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+}
+
+.d-spec-kicker {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.d-spec h2 {
+  margin-top: 2px;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.d-spec h3 {
+  margin-top: 22px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.d-spec ul {
+  margin-top: 8px;
+}
+
+.d-spec li {
+  position: relative;
+  padding: 7px 0 7px 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 16px;
+}
+
+.d-spec li::before {
+  position: absolute;
+  top: 17px;
+  left: 2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ink-3);
+  content: '';
+}
+
+.d-spec-now {
+  margin-top: 24px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: var(--sunken);
+}
+
+.d-spec-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+.d-spec-name {
+  margin-top: 4px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.d-spec-opt {
+  font-size: 15px;
+  color: var(--ink-2);
+}
+
+.d-spec-price {
+  margin-top: 6px;
+  font-size: 24px;
+  font-weight: 800;
+}

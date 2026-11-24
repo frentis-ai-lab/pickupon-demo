@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>픽업온 Sprint 1 시연</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/demo.css" />
+  </head>
+  <body class="d">
+    <header class="d-top">
+      <div class="d-title">
+        <strong>픽업온 Sprint 1 시연</strong>
+        <span>하루빈 역삼점 파일럿 · 교육용 가상 사례</span>
+      </div>
+
+      <div class="d-clock" role="group" aria-label="시연 시각">
+        <div class="d-clock-now">
+          <span class="d-clock-label">시연 시각</span>
+          <b class="num" data-clock-time>--:--:--</b>
+          <span class="d-chip" data-clock-mode>실제 시각</span>
+        </div>
+        <div class="d-presets" data-presets>
+          <button type="button" data-time="real">실제 시각</button>
+          <button type="button" data-time="06:59:00">06:59</button>
+          <button type="button" data-time="07:00:00">07:00</button>
+          <button type="button" data-time="20:59:00">20:59</button>
+          <button type="button" data-time="21:00:00">21:00</button>
+          <button type="button" data-time="21:01:00">21:01</button>
+        </div>
+        <form class="d-custom" data-custom>
+          <input type="time" step="1" value="10:00:00" aria-label="시연 시각 직접 지정" />
+          <button type="submit">지정</button>
+        </form>
+      </div>
+
+      <div class="d-actions">
+        <button type="button" class="d-btn" data-view>고객 화면 크게</button>
+        <a class="d-btn" href="/acceptance" target="_blank" rel="noopener">인수조건 점검표</a>
+        <button type="button" class="d-btn d-btn-reset" data-reset>데이터 초기화</button>
+      </div>
+    </header>
+
+    <main class="d-stage">
+      <section class="d-pane d-pane-phone">
+        <p class="d-cap">고객 화면 <span>휴대폰 · 폭 390px</span></p>
+        <div class="d-phone-box">
+          <div class="d-phone">
+            <div class="d-phone-screen">
+              <div class="d-status">
+                <b class="num" data-phone-time>--:--</b>
+                <span class="d-status-icons" aria-hidden="true">
+                  <svg width="17" height="11" viewBox="0 0 17 11"><rect x="0" y="7" width="3" height="4" rx="1" /><rect x="4.5" y="5" width="3" height="6" rx="1" /><rect x="9" y="2.5" width="3" height="8.5" rx="1" /><rect x="13.5" y="0" width="3" height="11" rx="1" /></svg>
+                  <svg width="25" height="12" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity=".45" /><rect x="2" y="2" width="15" height="8" rx="1.6" /><rect x="22.5" y="4" width="2" height="4" rx="1" opacity=".45" /></svg>
+                </span>
+              </div>
+              <iframe data-customer src="/" title="고객 화면"></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="d-pane d-pane-store">
+        <p class="d-cap">매장 화면 <span>태블릿 · 바리스타용</span></p>
+        <div class="d-tablet">
+          <iframe data-store src="/store" title="매장 화면"></iframe>
+        </div>
+      </section>
+
+      <aside class="d-spec" aria-label="메뉴 옵션 고르기 인수조건">
+        <p class="d-spec-kicker">스토리</p>
+        <h2>메뉴 옵션 고르기</h2>
+        <h3>인수조건 요약</h3>
+        <ul>
+          <li>사이즈: Regular / Large(+500원)</li>
+          <li>샷 추가: +500원, 최대 2회</li>
+          <li>온도: HOT / ICE, ICE만 가능한 메뉴는 고정</li>
+          <li>옵션을 바꾸면 가격이 바로 바뀐다</li>
+        </ul>
+        <div class="d-spec-now">
+          <p class="d-spec-label">지금 고른 옵션</p>
+          <p class="d-spec-name" data-sel-name>메뉴를 고르면 여기에 보여요</p>
+          <p class="d-spec-opt" data-sel-opt></p>
+          <p class="d-spec-price num" data-sel-price></p>
+        </div>
+      </aside>
+    </main>
+    <script type="module" src="/js/demo.js"></script>
+  </body>
+</html>
