@@ -1,7 +1,6 @@
 // 고객 화면과 매장 화면이 함께 쓰는 도구
 
 export const STATUS = { received: '접수', making: '제조 중', ready: '픽업 대기', done: '전달 완료' };
-export const STATUS_FLOW = ['received', 'making', 'ready', 'done'];
 
 export const won = (n) => `${Number(n).toLocaleString('ko-KR')}원`;
 

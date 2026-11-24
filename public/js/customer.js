@@ -1,11 +1,9 @@
-import { api, won, esc, clamp, optionText, menuArt, artTile, icons, STATUS, STATUS_FLOW } from './shared.js';
+import { api, won, esc, clamp, optionText, menuArt, artTile, icons } from './shared.js';
 
 const root = document.getElementById('app');
 const KEYS = { cart: 'pickupon.cart', last: 'pickupon.lastOrder', customer: 'pickupon.customer' };
-const POLL_MS = 3000;
 
 let menu = null;
-let timer = null;
 let routeToken = 0;
 let toast = '';
 
@@ -69,7 +67,7 @@ function renderMenu() {
       </div>
       ${cartButton(count)}
     </header>
-    ${last ? `<a class="c-last" href="#/order/${last.no}">주문번호 <b class="num">${last.no}</b><span class="c-last-status" data-last-status>상태 보기</span>${icons.next}</a>` : ''}
+    ${last ? `<a class="c-last" href="#/order/${last.no}">주문번호 <b class="num">${last.no}</b><span class="c-last-link">주문 내용 보기</span>${icons.next}</a>` : ''}
     ${menu.categories
       .map(
         (cat) => `
@@ -97,15 +95,12 @@ function itemRow(item) {
   </a></li>`;
 }
 
+// 데이터를 초기화해 주문이 사라졌으면 띠를 지운다.
 async function refreshLastOrder(no) {
-  const { ok, data } = await api(`/api/orders/${no}`);
-  if (!ok || data.order.status === 'done') {
-    write(KEYS.last, null);
-    root.querySelector('.c-last')?.remove();
-    return;
-  }
-  const el = root.querySelector('[data-last-status]');
-  if (el) el.textContent = STATUS[data.order.status];
+  const { ok } = await api(`/api/orders/${no}`).catch(() => ({ ok: false }));
+  if (ok) return;
+  write(KEYS.last, null);
+  root.querySelector('.c-last')?.remove();
 }
 
 /* 메뉴 옵션 고르기 */
@@ -357,66 +352,46 @@ function renderCheckout() {
   });
 }
 
-/* 주문번호와 상태 */
-const STATUS_COPY = {
-  received: ['주문이 접수되었어요', '매장에서 곧 만들기 시작해요.'],
-  making: ['음료를 만들고 있어요', '조금만 기다려 주세요.'],
-  ready: ['픽업대에서 받아 가세요', '이름과 끝번호를 말씀해 주세요.'],
-  done: ['전달이 끝났어요', '맛있게 드세요.'],
-};
-
+/* 주문 완료: 주문번호와 주문 내용
+   진행 상태(접수 → 제조 중 → 픽업 대기 → 전달 완료) 표시는 '내 주문 상태 확인' 스토리의 몫이라
+   Sprint 1에는 넣지 않았다. */
 function orderBody(o) {
-  const [title, sub] = STATUS_COPY[o.status];
-  const at = STATUS_FLOW.indexOf(o.status);
-  const stepClass = (i) => (o.status === 'done' || i < at ? 'is-done' : i === at ? 'is-current' : '');
   return `
   <section class="c-order-hero">
     <p class="c-order-label">주문번호</p>
-    <p class="c-order-no num" data-order-no>${o.no}</p>
-    <h2 class="c-order-title">${title}</h2>
-    <p class="c-order-sub">${sub}</p>
-    <p class="c-order-who">${esc(o.customer.name)} · 끝번호 <span class="num">${esc(o.customer.phone4)}</span> · <span class="num">${o.orderedAt}</span> 주문</p>
+    <p class="c-order-no num">${o.no}</p>
+    <p class="c-order-who"><span class="num">${o.orderedAt}</span> 주문 · 테스트 결제 완료</p>
   </section>
-  <ol class="c-steps" aria-label="진행 상태">${STATUS_FLOW.map((s, i) => `<li class="${stepClass(i)}">${STATUS[s]}</li>`).join('')}</ol>
+  <section class="c-pickup">
+    <p class="c-pickup-title">매장에서 이름(끝 4자리)을 부르면 받아 가세요</p>
+    <p class="c-pickup-name">${esc(o.customer.name)}<span class="num">(${esc(o.customer.phone4)})</span></p>
+    <p class="c-pickup-store">픽업 매장 · 하루빈 역삼점</p>
+  </section>
   <section class="c-card">
-    <h2>주문 메뉴</h2>
+    <h2>주문 내용</h2>
     <ul class="c-mini">${miniLines(o.items)}</ul>
-    <dl class="c-sum c-sum-in"><dt>테스트 결제 완료</dt><dd class="num">${won(o.total)}</dd></dl>
-  </section>
-  <p class="c-refresh">${icons.refresh} 3초마다 상태를 새로 확인해요</p>`;
+    <dl class="c-sum c-sum-in"><dt>결제 금액</dt><dd class="num">${won(o.total)}</dd></dl>
+  </section>`;
 }
 
 async function renderOrder(no, token) {
   root.innerHTML = `
   <div class="c-page has-bottom c-order">
-    ${topBar('주문 상태', '#/')}
+    ${topBar('주문 완료', '#/')}
     <div data-body><p class="c-loading">주문을 불러오는 중…</p></div>
     ${bottom('<a class="btn btn-secondary btn-block" href="#/">메뉴 더 보기</a>')}
   </div>`;
-  let shown = '';
-  const load = async () => {
-    const { ok, data } = await api(`/api/orders/${no}`).catch(() => ({ ok: false, data: {} }));
-    if (token !== routeToken) return;
-    const body = root.querySelector('.c-order [data-body]');
-    if (!ok) {
-      clearInterval(timer);
-      body.innerHTML = `<div class="c-empty"><p class="c-empty-title">주문을 찾을 수 없어요</p><p class="c-empty-sub">없는 주문번호이거나 시연 데이터를 초기화했어요.</p><a class="btn btn-secondary" href="#/">메뉴로 가기</a></div>`;
-      return;
-    }
-    if (data.order.status !== shown) {
-      shown = data.order.status;
-      body.innerHTML = orderBody(data.order);
-    }
-  };
-  await load();
-  if (token === routeToken) timer = setInterval(load, POLL_MS);
+  const { ok, data } = await api(`/api/orders/${no}`).catch(() => ({ ok: false, data: {} }));
+  if (token !== routeToken) return;
+  const body = root.querySelector('.c-order [data-body]');
+  body.innerHTML = ok
+    ? orderBody(data.order)
+    : `<div class="c-empty"><p class="c-empty-title">주문을 찾을 수 없어요</p><p class="c-empty-sub">없는 주문번호이거나 시연 데이터를 초기화했어요.</p><a class="btn btn-secondary" href="#/">메뉴로 가기</a></div>`;
 }
 
 /* 화면 전환 */
 function route() {
   routeToken += 1;
-  clearInterval(timer);
-  timer = null;
   const [page, param] = location.hash.replace(/^#\/?/, '').split('/');
   if (page !== 'menu') tellParent({ type: 'selection', none: true });
   if (page === 'menu' && param) renderDetail(param);
