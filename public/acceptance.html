@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>인수조건 점검표 · 픽업온</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/acceptance.css" />
+  </head>
+  <body class="a">
+    <main class="a-wrap">
+      <header class="a-head">
+        <div>
+          <p class="a-crumb">픽업온 · Sprint 1 · 인수조건 점검표</p>
+          <h1>장바구니에 담아 주문하기 <span>(테스트 결제)</span></h1>
+          <p class="a-story">출근길 직장인으로서, 고른 음료를 장바구니에 담아 한 번에 주문하고 싶다. 그래야 매장에 도착했을 때 기다리지 않고 받아 갈 수 있다.</p>
+        </div>
+        <div class="a-run">
+          <button type="button" class="btn btn-primary" data-run>다시 실행</button>
+          <p class="a-ran num" data-ran>실행 준비 중</p>
+        </div>
+      </header>
+
+      <section class="a-summary" data-summary aria-live="polite"></section>
+
+      <table class="a-table">
+        <colgroup>
+          <col style="width: 76px" />
+          <col style="width: 76px" />
+          <col />
+          <col style="width: 25%" />
+          <col style="width: 29%" />
+          <col style="width: 104px" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>조건</th>
+            <th>구분</th>
+            <th>인수조건</th>
+            <th>기대값</th>
+            <th>실제값</th>
+            <th>결과</th>
+          </tr>
+        </thead>
+        <tbody data-rows></tbody>
+      </table>
+
+      <p class="a-note">
+        검사 방법: 시연 데이터와 섞이지 않도록 같은 코드로 서버를 하나 더 띄워 시각을 지정한 뒤, 실제 주문 API(<code>POST /api/orders</code>)와 매장 목록 API(<code>GET /api/store/orders</code>)를 호출합니다. 터미널에서는 <code>pnpm test</code>로 같은 검사를 실행합니다.
+      </p>
+    </main>
+    <script type="module" src="/js/acceptance.js"></script>
+  </body>
+</html>
