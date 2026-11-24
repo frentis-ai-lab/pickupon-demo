@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>매장 주문 · 하루빈 역삼점</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/store.css" />
+  </head>
+  <body class="s">
+    <header class="s-head">
+      <div class="s-title">
+        <strong>하루빈 역삼점</strong>
+        <span>픽업온 주문</span>
+      </div>
+      <div class="s-meta">
+        <span class="s-clock">현재 <b class="num" data-clock>--:--:--</b></span>
+        <span class="s-sync">3초마다 새 주문 확인</span>
+      </div>
+    </header>
+    <main class="s-main">
+      <div class="s-summary" data-summary></div>
+      <section class="s-board" aria-label="진행 중인 주문">
+        <div class="s-row s-row-head" aria-hidden="true">
+          <span>주문</span><span>상태</span><span>주문자</span><span>메뉴</span><span>금액</span><span>진행</span>
+        </div>
+        <div data-orders></div>
+      </section>
+      <section class="s-done" data-done></section>
+    </main>
+    <script type="module" src="/js/store.js"></script>
+  </body>
+</html>
